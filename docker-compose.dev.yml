@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    container_name: mern-backend-dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - MONGO_URI=mongodb://abhinay:password123@mongo:27017/enterprise-db?authSource=admin
+      - PORT=5000
+      - NODE_ENV=development
+    depends_on:
+      - mongo
+    networks:
+      - mern-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    container_name: mern-frontend-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - backend
+    networks:
+      - mern-network
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+  mongo:
+    image: mongo:6
+    container_name: mongo-dev
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: abhinay
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: enterprise-db
+    networks:
+      - mern-network
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
+
+networks:
+  mern-network:
+    driver: bridge
