@@ -88,7 +88,7 @@ export const viewCurrentProduct = async (id) => {
   return product;
 };
 
-export const updateProduct = async (id, data) => {
+export const updateProductData = async (id, data) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const error = new Error("Invalid product ID format");
     error.status = 400;
@@ -110,7 +110,7 @@ export const updateProduct = async (id, data) => {
   return product;
 };
 
-export const deleteProduct = async (id) => {
+export const deleteProductData = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const error = new Error("Invalid product ID format");
     error.status = 400;

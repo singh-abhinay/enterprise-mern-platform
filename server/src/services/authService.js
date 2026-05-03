@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/token.js";
 
 export const registerUser = async (data) => {
-  const { name, email, password, address } = data;
+  const { name, email, password, address, role } = data;
 
   if (!name || !email || !password || !address) {
     throw new Error("All fields are required");
@@ -19,6 +19,7 @@ export const registerUser = async (data) => {
     email,
     password: hashed,
     address,
+    role: role || "user",
   });
 
   const token = generateToken(user);
@@ -41,14 +42,16 @@ export const loginUser = async (data) => {
   }
 
   const user = await User.findOne({ email }).select("+password");
-  if (!user) throw new Error("Invalid credentials");
+  if (!user)
+    throw new Error("Invalid credentials, username or password does not match");
 
   if (!user.isActive) {
     throw new Error("Account is deactivated");
   }
 
   const match = await bcrypt.compare(password, user.password);
-  if (!match) throw new Error("Invalid credentials");
+  if (!match)
+    throw new Error("Invalid credentials, username or password does not match");
 
   const token = generateToken(user);
 

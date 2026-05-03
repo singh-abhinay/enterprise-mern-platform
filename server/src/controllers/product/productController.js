@@ -3,6 +3,8 @@ import {
   listAllProduct,
   viewCurrentProduct,
   listProductsByCategory,
+  updateProductData,
+  deleteProductData,
 } from "../../services/productService.js";
 
 export const createProduct = async (req, res, next) => {
@@ -47,6 +49,33 @@ export const viewProduct = async (req, res, next) => {
     res.json({
       success: true,
       data: product,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateProduct = async (req, res, next) => {
+  try {
+    const product = await updateProductData(req.params.id, req.body);
+
+    res.json({
+      success: true,
+      data: product,
+      message: "Product updated successfully",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteProduct = async (req, res, next) => {
+  try {
+    await deleteProductData(req.params.id);
+
+    res.json({
+      success: true,
+      message: "Product deleted successfully",
     });
   } catch (err) {
     next(err);
