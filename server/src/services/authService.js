@@ -1,16 +1,20 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/token.js";
+import ApiError from "../utils/ApiError.js";
 
 export const registerUser = async (data) => {
-  const { name, email, password, address, role } = data;
+  const { name, email, password, address } = data;
 
   if (!name || !email || !password || !address) {
-    throw new Error("All fields are required");
+    throw new ApiError(400, "All fields are required");
   }
 
   const existing = await User.findOne({ email });
-  if (existing) throw new Error("User already exists");
+
+  if (existing) {
+    throw new ApiError(409, "User already exists");
+  }
 
   const hashed = await bcrypt.hash(password, 10);
 
@@ -19,7 +23,6 @@ export const registerUser = async (data) => {
     email,
     password: hashed,
     address,
-    role: role || "user",
   });
 
   const token = generateToken(user);
@@ -38,20 +41,24 @@ export const loginUser = async (data) => {
   const { email, password } = data;
 
   if (!email || !password) {
-    throw new Error("Email and password are required");
+    throw new ApiError(400, "Email and password are required");
   }
 
   const user = await User.findOne({ email }).select("+password");
-  if (!user)
-    throw new Error("Invalid credentials, username or password does not match");
 
-  if (!user.isActive) {
-    throw new Error("Account is deactivated");
+  if (!user) {
+    throw new ApiError(401, "Invalid credentials");
   }
 
-  const match = await bcrypt.compare(password, user.password);
-  if (!match)
-    throw new Error("Invalid credentials, username or password does not match");
+  if (!user.isActive) {
+    throw new ApiError(403, "Account is deactivated");
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new ApiError(401, "Invalid credentials");
+  }
 
   const token = generateToken(user);
 

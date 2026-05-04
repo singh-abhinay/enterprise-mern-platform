@@ -1,0 +1,19 @@
+{
+  "name": "shadcn-admin",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install",
+  "forwardPorts": [3000],
+  "workspaceFolder": "/workspace"
+}

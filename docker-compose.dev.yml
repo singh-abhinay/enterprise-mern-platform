@@ -21,15 +21,15 @@ services:
       - mern-network
     restart: unless-stopped
 
-  frontend:
+  customer:
     build:
-      context: ./client
+      context: ./client/customer
       dockerfile: Dockerfile.dev
-    container_name: mern-frontend-dev
+    container_name: mern-customer-dev
     ports:
       - "3000:3000"
     volumes:
-      - ./client:/usr/src/app
+      - ./client/customer:/usr/src/app
       - /usr/src/app/node_modules
     environment:
       - NODE_ENV=development
@@ -39,7 +39,27 @@ services:
       - backend
     networks:
       - mern-network
-    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+  admin:
+    build:
+      context: ./client/admin
+      dockerfile: Dockerfile.dev
+    container_name: mern-admin-dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./client/admin:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - backend
+    networks:
+      - mern-network
     stdin_open: true
     tty: true
 
