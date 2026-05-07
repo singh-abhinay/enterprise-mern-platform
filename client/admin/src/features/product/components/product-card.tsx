@@ -8,16 +8,10 @@ import {
     CardFooter,
 } from '@/components/ui/card'
 import { useProductStore } from '@/stores/use-product-store'
+import { ProductType } from '@/features/product/types/product.types'
 
 interface ProductCardProps {
-    productData: {
-        _id: string
-        name: string
-        description: string
-        image: string
-        slug: string
-        isActive: boolean
-    }
+    productData: ProductType
 }
 
 export function ProductCard({ productData }: ProductCardProps) {
@@ -27,8 +21,14 @@ export function ProductCard({ productData }: ProductCardProps) {
     return (
         <Card className='overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg'>
             <img
-                src={productData.image}
-                alt={productData.name}
+                src={
+                    productData.images?.[0]?.url ||
+                    '/placeholder-image.png'
+                }
+                alt={
+                    productData.images?.[0]?.alt ||
+                    productData.name
+                }
                 className='h-52 w-full object-cover'
             />
 

@@ -1,34 +1,20 @@
 import { create } from 'zustand'
+import { ProductType } from '@/features/product/types/product.types'
+import { defaultProduct } from '@/features/product/constants/default-product'
 
-export interface Product {
-    _id?: string
-    name: string
-    description: string
-    image: string
-    slug: string
-    isActive: boolean
-}
-
-const defaultProduct: Product = {
-    name: '',
-    description: '',
-    image: '',
-    slug: '',
-    isActive: true,
-}
 
 interface ProductState {
     open: boolean
     mode: 'create' | 'edit'
-    selectedProduct: Product | null
+    selectedProduct: ProductType | null
 
-    formData: Product
+    formData: ProductType
 
     openCreate: () => void
-    openEdit: (product: Product) => void
+    openEdit: (product: ProductType) => void
     close: () => void
 
-    updateFormData: (data: Partial<Product>) => void
+    updateFormData: (data: Partial<ProductType>) => void
     resetForm: () => void
 }
 
