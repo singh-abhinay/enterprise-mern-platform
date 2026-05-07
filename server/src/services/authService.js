@@ -4,9 +4,9 @@ import { generateToken } from "../utils/token.js";
 import ApiError from "../utils/ApiError.js";
 
 export const registerUser = async (data) => {
-  const { name, email, password, address } = data;
+  const { name, email, password, address, role } = data;
 
-  if (!name || !email || !password || !address) {
+  if (!name || !email || !password || !address || !role) {
     throw new ApiError(400, "All fields are required");
   }
 
@@ -23,6 +23,7 @@ export const registerUser = async (data) => {
     email,
     password: hashed,
     address,
+    role,
   });
 
   const token = generateToken(user);
