@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import slugify from "slugify";
 import "./Category.js";
+import "./Brand.js";
 
 const productSchema = new mongoose.Schema(
   {
@@ -27,8 +28,8 @@ const productSchema = new mongoose.Schema(
     },
 
     brand: {
-      type: String,
-      trim: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Brand",
     },
 
     category: {

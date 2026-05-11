@@ -51,9 +51,9 @@ export function ProductForm() {
         e.preventDefault()
 
         if (mode === 'create') {
-            console.log('Create Category', formData)
+            console.log('Create Product', formData)
         } else {
-            console.log('Update Category', formData)
+            console.log('Update Product', formData)
         }
 
         handleClose()
@@ -73,16 +73,34 @@ export function ProductForm() {
                     <DialogHeader>
                         <DialogTitle>
                             {mode === 'create'
-                                ? 'Create Category'
-                                : 'Edit Category'}
+                                ? 'Create Product'
+                                : 'Edit Product'}
                         </DialogTitle>
 
                         <DialogDescription>
                             {mode === 'create'
-                                ? 'Add a new category for your products.'
-                                : 'Update the category details below.'}
+                                ? 'Add a new product for your products.'
+                                : 'Update the product details below.'}
                         </DialogDescription>
                     </DialogHeader>
+
+                    {/* Active Status */}
+                    <div className='flex items-center justify-between rounded-lg border p-4'>
+                        <div>
+                            <p className='font-medium'>
+                                Active Status
+                            </p>
+
+                            <p className='text-sm text-muted-foreground'>
+                                Enable or disable this product
+                            </p>
+                        </div>
+
+                        <Switch
+                            checked={formData.isActive}
+                            onCheckedChange={handleSwitchChange}
+                        />
+                    </div>
 
                     <div className='space-y-5 py-4'>
                         {/* Name */}
@@ -92,21 +110,8 @@ export function ProductForm() {
                             <Input
                                 id='name'
                                 name='name'
-                                placeholder='Enter category name'
+                                placeholder='Enter product name'
                                 value={formData.name}
-                                onChange={handleInputChange}
-                            />
-                        </div>
-
-                        {/* Slug */}
-                        <div className='space-y-2'>
-                            <Label htmlFor='slug'>Slug</Label>
-
-                            <Input
-                                id='slug'
-                                name='slug'
-                                placeholder='home-appliances'
-                                value={formData.slug}
                                 onChange={handleInputChange}
                             />
                         </div>
@@ -133,30 +138,42 @@ export function ProductForm() {
                             <Textarea
                                 id='description'
                                 name='description'
-                                placeholder='Write category description...'
+                                placeholder='Write product description...'
                                 className='min-h-[120px]'
                                 value={formData.description}
                                 onChange={handleInputChange}
                             />
                         </div>
 
-                        {/* Active Status */}
-                        <div className='flex items-center justify-between rounded-lg border p-4'>
-                            <div>
-                                <p className='font-medium'>
-                                    Active Status
-                                </p>
+                        {/* Short Description */}
+                        <div className='space-y-2'>
+                            <Label htmlFor='shortDescription'>
+                                Short Description
+                            </Label>
 
-                                <p className='text-sm text-muted-foreground'>
-                                    Enable or disable this category
-                                </p>
-                            </div>
-
-                            <Switch
-                                checked={formData.isActive}
-                                onCheckedChange={handleSwitchChange}
+                            <Textarea
+                                id='shortDescription'
+                                name='shortDescription'
+                                placeholder='Write product shortDescription...'
+                                className='min-h-[120px]'
+                                value={formData.shortDescription}
+                                onChange={handleInputChange}
                             />
                         </div>
+
+                        {/* Slug */}
+                        <div className='space-y-2'>
+                            <Label htmlFor='slug'>Slug</Label>
+
+                            <Input
+                                id='slug'
+                                name='slug'
+                                placeholder='home-appliances'
+                                value={formData.slug}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
                     </div>
 
                     <DialogFooter>
@@ -170,8 +187,8 @@ export function ProductForm() {
 
                         <Button type='submit'>
                             {mode === 'create'
-                                ? 'Create Category'
-                                : 'Update Category'}
+                                ? 'Create Product'
+                                : 'Update Product'}
                         </Button>
                     </DialogFooter>
                 </form>
