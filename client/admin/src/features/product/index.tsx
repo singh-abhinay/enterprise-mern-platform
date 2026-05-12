@@ -11,10 +11,11 @@ import { ProductGrid } from './components/product-grid'
 import { ProductForm } from './components/product-form'
 
 import { useProductStore } from '@/stores/use-product-store'
+import { useNavigate } from '@tanstack/react-router'
 
 export function Product() {
     const [search, setSearch] = useState('')
-
+    const navigate = useNavigate()
     const openCreate = useProductStore(
         (state) => state.openCreate
     )
@@ -41,7 +42,7 @@ export function Product() {
                         </p>
                     </div>
 
-                    <Button onClick={openCreate}>
+                    <Button onClick={() => navigate({ to: '/product/add' })}>
                         <Plus className='mr-2 size-4' />
                         Add Product
                     </Button>
