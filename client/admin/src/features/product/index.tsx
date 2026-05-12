@@ -66,9 +66,6 @@ export function Product() {
                 <ProductGrid
                     products={filteredProducts}
                 />
-
-                {/* Modal */}
-                <ProductForm />
             </section>
         </Main>
     )
